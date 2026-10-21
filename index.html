@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeadFinder Global | Find Your Next Customers</title>
+<style>
+:root {
+  --navy: #10233f;
+  --blue: #2563eb;
+  --green: #65d6ad;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --bg: #f5f7fb;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: #172033;
+}
+header {
+  background: var(--navy);
+  color: white;
+  padding: 24px max(5%, calc((100% - 1200px)/2));
+}
+.brand { font-size: 22px; font-weight: 800; }
+.brand span { color: var(--green); }
+header p { color: #cbd5e1; margin-bottom: 0; }
+main { max-width: 1200px; margin: 32px auto; padding: 0 20px; }
+h1 { margin-bottom: 8px; font-size: 30px; }
+.muted { color: var(--muted); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.stat, .panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.stat strong { display: block; font-size: 28px; margin-top: 8px; }
+.filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0;
+}
+input, select, button {
+  font: inherit;
+  padding: 12px;
+  border-radius: 8px;
+}
+input, select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  background: white;
+  min-width: 0;
+}
+button {
+  border: 0;
+  cursor: pointer;
+  font-weight: 700;
+}
+.primary { background: var(--blue); color: white; }
+.secondary { background: #eaf0fa; color: var(--navy); }
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 700px; }
+th, td {
+  text-align: left;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+th { color: var(--muted); background: #f8fafc; }
+.company { font-weight: 700; }
+.tag {
+  display: inline-block;
+  background: #eaf7f1;
+  color: #16634c;
+  padding: 5px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.notice {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fff7df;
+  color: #75520b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px 15px;
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .filters { grid-template-columns: 1fr; }
+  main { margin-top: 22px; padding: 0 14px; }
+  h1 { font-size: 25px; }
+  .stat, .panel { padding: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">LeadFinder <span>Global</span></div>
+  <p>Discover business prospects. Grow your pipeline.</p>
+</header>
+
+<main>
+  <h1>Find your next customers.</h1>
+  <p class="muted">
+    Search business prospects by location and industry.
+  </p>
+
+  <section class="stats">
+    <div class="stat">
+      <span class="muted">Demo records</span>
+      <strong id="total">8</strong>
+    </div>
+    <div class="stat">
+      <span class="muted">Matching results</span>
+      <strong id="matches">8</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Search prospects</h2>
+
+    <div class="filters">
+      <input id="search" type="search"
+        placeholder="Company, city or keyword...">
+
+      <select id="country" aria-label="Filter by country">
+        <option value="">All countries</option>
+        <option>Nigeria</option>
+        <option>United States</option>
+        <option>United Kingdom</option>
+        <option>Canada</option>
+        <option>Australia</option>
+      </select>
+
+      <select id="industry" aria-label="Filter by industry">
+        <option value="">All industries</option>
+        <option>Marketing</option>
+        <option>Construction</option>
+        <option>Healthcare</option>
+        <option>Technology</option>
+        <option>Real Estate</option>
+      </select>
+    </div>
+
+    <div class="toolbar">
+      <span id="resultText" class="muted">8 results</span>
+      <div>
+        <button class="secondary" id="reset">Reset</button>
+        <button class="primary" id="export">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAll"
+              aria-label="Select all visible records"></th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Industry</th>
+            <th>Website</th>
+          </tr>
+        </thead>
+        <tbody id="results"></tbody>
+      </table>
+    </div>
+
+    <p id="empty" hidden>No matching records. Try different filters.</p>
+
+    <div class="notice">
+      Prototype notice: these are fictional demonstration records.
+      Website addresses are examples, not verified businesses.
+      No real contact information has been collected. This version
+      does not scrape the internet or connect to a live database.
+    </div>
+  </section>
+</main>
+
+<footer>
+  LeadFinder Global · Early prototype · Built for better prospecting
+</footer>
+
+<script>
+const leads = [
+  {id:1, name:"BrightPath Digital", country:"United States",
+   city:"Austin", industry:"Marketing", website:"brightpath.example"},
+  {id:2, name:"Northstar Construction", country:"United Kingdom",
+   city:"Manchester", industry:"Construction", website:"northstar.example"},
+  {id:3, name:"Greenfield Dental Group", country:"Nigeria",
+   city:"Lagos", industry:"Healthcare", website:"greenfield.example"},
+  {id:4, name:"Cloudbridge Solutions", country:"Canada",
+   city:"Toronto", industry:"Technology", website:"cloudbridge.example"},
+  {id:5, name:"Summit Marketing Studio", country:"United Kingdom",
+   city:"London", industry:"Marketing", website:"summitstudio.example"},
+  {id:6, name:"Evergreen Property Group", country:"Australia",
+   city:"Sydney", industry:"Real Estate", website:"evergreen.example"},
+  {id:7, name:"Atlas Software Works", country:"Nigeria",
+   city:"Abuja", industry:"Technology", website:"atlasworks.example"},
+  {id:8, name:"Cedar Health Partners", country:"United States",
+   city:"Denver", industry:"Healthcare", website:"cedarhealth.example"}
+];
+
+const $ = id => document.getElementById(id);
+const selected = new Set();
+
+function getFiltered() {
+  const term = $("search").value.trim().toLowerCase();
+  const country = $("country").value;
+  const industry = $("industry").value;
+
+  return leads.filter(lead => {
+    const text = [
+      lead.name, lead.country, lead.city, lead.industry
+    ].join(" ").toLowerCase();
+
+    return (!term || text.includes(term)) &&
+      (!country || lead.country === country) &&
+      (!industry || lead.industry === industry);
+  });
+}
+
+function render() {
+  const records = getFiltered();
+  $("total").textContent = leads.length;
+  $("matches").textContent = records.length;
+  $("resultText").textContent =
+    records.length + (records.length === 1 ? " result" : " results");
+
+  $("results").innerHTML = records.map(lead => `
+    <tr>
+      <td>
+        <input type="checkbox" class="record-check"
+          data-id="${lead.id}" aria-label="Select ${lead.name}"
+          ${selected.has(lead.id) ? "checked" : ""}>
+      </td>
+      <td class="company">${lead.name}</td>
+      <td>${lead.city}, ${lead.country}</td>
+      <td><span class="tag">${lead.industry}</span></td>
+      <td>${lead.website}</td>
+    </tr>
+  `).join("");
+
+  $("empty").hidden = records.length !== 0;
+  $("selectAll").checked =
+    records.length > 0 && records.every(l => selected.has(l.id));
+
+  document.querySelectorAll(".record-check").forEach(box => {
+    box.addEventListener("change", () => {
+      const id = Number(box.dataset.id);
+      if (box.checked) selected.add(id);
+      else selected.delete(id);
+      render();
+    });
+  });
+}
+
+["search", "country", "industry"].forEach(id => {
+  $(id).addEventListener("input", render);
+  $(id).addEventListener("change", render);
+});
+
+$("selectAll").addEventListener("change", () => {
+  getFiltered().forEach(lead => {
+    if ($("selectAll").checked) selected.add(lead.id);
+    else selected.delete(lead.id);
+  });
+  render();
+});
+
+$("reset").addEventListener("click", () => {
+  $("search").value = "";
+  $("country").value = "";
+  $("industry").value = "";
+  selected.clear();
+  render();
+});
+
+$("export").addEventListener("click", () => {
+  const records = getFiltered().filter(lead =>
+    selected.size === 0 || selected.has(lead.id)
+  );
+
+  if (!records.length) {
+    alert("No records to export.");
+    return;
+  }
+
+  const columns = [
+    "Company", "Country", "City", "Industry", "Website"
+  ];
+
+  const quote = value =>
+    '"' + String(value).replace(/"/g, '""') + '"';
+
+  const csv = [
+    columns.map(quote).join(","),
+    ...records.map(lead => [
+      lead.name, lead.country, lead.city,
+      lead.industry, lead.website
+    ].map(quote).join(","))
+  ].join("\r\n");
+
+  const blob = new Blob(["\uFEFF" + csv], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "leadfinder-prospects.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
+render();
+</script>
+</body>
+</html>
